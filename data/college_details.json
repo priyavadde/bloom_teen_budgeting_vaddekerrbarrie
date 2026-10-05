@@ -1,0 +1,125 @@
+{
+  "utaustin": {
+    "model": "ut",
+    "year": "2026-27",
+    "tagline": "Public research university · Austin, TX",
+    "has_residency": true,
+    "fees": 0,
+    "tuition": {"resident": 10858, "nonresident": 42554},
+    "tuition_note": "Tuition and mandatory fees. UT publishes a range of $10,858-$13,576 for Texas residents depending on college; this page starts from the low end and adds the published McCombs, Cockrell and Natural Sciences differentials. Resident undergraduate tuition is frozen for 2025-26 and 2026-27. Programs not listed here may cost more, so check UT's tuition chart.",
+    "nonres_note": "The Texas Advance Commitment is for Texas residents, so this estimate assumes no need-based aid. Merit scholarships are possible but rare.",
+    "major_aid_text": "{college} may offer its own college- and department-level scholarships on top of university aid. Search UT's Scholarship Finder by college and major. Tuition is the part of your cost that changes with your major: McCombs and Cockrell add about $1,100 a year for residents, and Natural Sciences about $500.",
+    "living": {
+      "options": [
+        {"id": "away", "label": "On campus or off campus", "housing_food": 15500},
+        {"id": "home", "label": "With my parents", "housing_food": 7910}
+      ],
+      "transport": 1840,
+      "books": 724,
+      "personal": 3666
+    },
+    "majors": [
+      {"name": "Computer Science", "college": "The College of Natural Sciences", "diff_res": 500, "diff_non": 1000},
+      {"name": "Biology", "college": "The College of Natural Sciences", "diff_res": 500, "diff_non": 1000},
+      {"name": "Mathematics", "college": "The College of Natural Sciences", "diff_res": 500, "diff_non": 1000},
+      {"name": "Business (Finance, Accounting, Marketing)", "college": "McCombs School of Business", "diff_res": 1100, "diff_non": 2200},
+      {"name": "Mechanical Engineering", "college": "Cockrell School of Engineering", "diff_res": 1100, "diff_non": 2200},
+      {"name": "Electrical & Computer Engineering", "college": "Cockrell School of Engineering", "diff_res": 1100, "diff_non": 2200},
+      {"name": "Aerospace Engineering", "college": "Cockrell School of Engineering", "diff_res": 1100, "diff_non": 2200},
+      {"name": "Psychology", "college": "The College of Liberal Arts", "diff_res": 0, "diff_non": 0},
+      {"name": "English", "college": "The College of Liberal Arts", "diff_res": 0, "diff_non": 0},
+      {"name": "History", "college": "The College of Liberal Arts", "diff_res": 0, "diff_non": 0},
+      {"name": "Government", "college": "The College of Liberal Arts", "diff_res": 0, "diff_non": 0},
+      {"name": "Communication Studies / Journalism", "college": "Moody College of Communication", "diff_res": 0, "diff_non": 0},
+      {"name": "Other / undecided", "college": "Your college", "diff_res": 0, "diff_non": 0}
+    ],
+    "income_brackets": [
+      {"id": "low", "label": "$100,000 or less", "rule": "tuition_full"},
+      {"id": "mid", "label": "$100,001 - $125,000", "rule": "tuition_partial", "fraction": 0.5},
+      {"id": "high", "label": "Above $125,000", "rule": "none"}
+    ],
+    "aid_options": [
+      {"name": "Texas Advance Commitment", "kind": "Need-based · Texas residents", "what": "Tuition is covered for family income up to $100,000 (after Pell and Texas Grant). Families between $100,001 and $125,000 get partial tuition help. No separate application beyond the FAFSA or TASFA.", "url": "https://admissions.utexas.edu/cost-aid/financial-aid/texas-advance-commitment/"},
+      {"name": "Pell Grant and Texas Grant", "kind": "Need-based grants", "what": "Federal and state grants are applied first. UT fills any remaining tuition gap for Texas Advance Commitment students.", "url": "https://onestop.utexas.edu/managing-costs/scholarships-financial-aid/types-of-financial-aid/grants/"},
+      {"name": "Forty Acres Scholars Program", "kind": "Merit · extremely selective", "what": "UT's flagship full-ride-plus-enrichment scholarship, given to only about 15-25 incoming freshmen a year. Don't count on it.", "url": ""},
+      {"name": "College and department scholarships", "kind": "Merit / major-specific", "what": "Colleges like McCombs, Cockrell, Moody and Liberal Arts run their own awards. Filter by college and major in UT's Scholarship Finder.", "url": "https://utexas.scholarships.ngwebsolutions.com/CMXAdmin/Cmx_Content.aspx?cpId=1564"},
+      {"name": "Federal Work-Study", "kind": "Need-based job", "what": "Part-time campus jobs for students with financial need.", "url": "https://onestop.utexas.edu/managing-costs/scholarships-financial-aid/types-of-financial-aid/work-study/"},
+      {"name": "Tuition rebate", "kind": "After graduation", "what": "Eligible graduates can get up to $1,000 back, plus $2,500 more if they chose Longhorn Fixed Tuition.", "url": "https://onestop.utexas.edu/managing-costs/cost-tuition-rates/post-graduation-rebates/"},
+      {"name": "If you're from out of state", "kind": "Info", "what": "Need-based programs like the Texas Advance Commitment are for Texas residents. Non-residents can still compete for merit awards, and a competitive scholarship of at least $1,000 may qualify you for in-state tuition. Ask UT's financial aid office.", "url": ""}
+    ],
+    "area": [
+      {"label": "UT's housing + food budget", "value": "$15,420-$15,580 / year (~$1,300 / month)"},
+      {"label": "Average Austin 1-bedroom rent", "value": "~$1,400 / month"},
+      {"label": "Average Austin 2-bedroom rent", "value": "~$1,800 / month"},
+      {"label": "West Campus bed in a shared unit", "value": "~$1,000-$1,200+ / person / month"},
+      {"label": "Farther from campus, split 2-bedroom", "value": "often under ~$800 / person / month"},
+      {"label": "UT's transportation budget", "value": "$1,840 / year"},
+      {"label": "UT's personal expenses budget", "value": "$3,666 / year"}
+    ],
+    "area_note": "Rent near campus can use most of UT's housing-and-food budget, so living in West Campus may cost more than the estimate. Rent figures come from fall 2026 listings and vary by source and lease.",
+    "links": [
+      {"label": "UT cost of attendance", "url": "https://onestop.utexas.edu/managing-costs/cost-tuition-rates/cost-of-attendance/"},
+      {"label": "UT tuition rates by college", "url": "https://onestop.utexas.edu/managing-costs/cost-tuition-rates/tuition-rates/"},
+      {"label": "UT net price calculator", "url": "https://onestop.utexas.edu/net-price-calculator/"}
+    ]
+  },
+
+  "dartmouth": {
+    "model": "dartmouth",
+    "year": "2026-27",
+    "tagline": "Ivy League · Hanover, NH",
+    "has_residency": false,
+    "fees": 2157,
+    "tuition": {"resident": 71697, "nonresident": 71697},
+    "tuition_note": "Tuition is $71,697 plus $2,157 in fees (financial aid office figures). Dartmouth's admissions page lists a slightly higher total ($98,946), so confirm with the school. Health insurance ($5,216) is not included; students on need-based aid get at least half of it back as extra scholarship. Dartmouth runs on three terms per year.",
+    "nonres_note": "",
+    "major_aid_text": "At Dartmouth, tuition and need-based aid are the same for every major, so choosing a major doesn't change these estimates. Dartmouth offers only need-based aid (no merit or athletic scholarships).",
+    "living": {
+      "options": [
+        {"id": "campus", "label": "Dartmouth housing and dining", "housing_food": 21528}
+      ],
+      "transport": 0,
+      "books": 1005,
+      "personal": 2040
+    },
+    "majors": [
+      {"name": "Computer Science", "college": "Dartmouth", "diff_res": 0, "diff_non": 0},
+      {"name": "Economics", "college": "Dartmouth", "diff_res": 0, "diff_non": 0},
+      {"name": "Government", "college": "Dartmouth", "diff_res": 0, "diff_non": 0},
+      {"name": "Biology", "college": "Dartmouth", "diff_res": 0, "diff_non": 0},
+      {"name": "Engineering Sciences", "college": "Dartmouth", "diff_res": 0, "diff_non": 0},
+      {"name": "English", "college": "Dartmouth", "diff_res": 0, "diff_non": 0},
+      {"name": "History", "college": "Dartmouth", "diff_res": 0, "diff_non": 0},
+      {"name": "Psychology", "college": "Dartmouth", "diff_res": 0, "diff_non": 0},
+      {"name": "Other / undecided", "college": "Dartmouth", "diff_res": 0, "diff_non": 0}
+    ],
+    "income_brackets": [
+      {"id": "low", "label": "Under $125,000 (typical assets)", "rule": "coa_minus_student", "student_contribution": 2500},
+      {"id": "mid", "label": "$125,000 - $175,000 (typical assets)", "rule": "tuition_full"},
+      {"id": "high", "label": "Over $175,000", "rule": "none"}
+    ],
+    "aid_options": [
+      {"name": "Need-based Dartmouth Scholarship", "kind": "Need-based", "what": "Dartmouth meets 100% of demonstrated need with scholarships and student work. Aid packages never include a required loan.", "url": "https://admissions.dartmouth.edu/how-aid-works"},
+      {"name": "Zero parent contribution", "kind": "Need-based", "what": "Families with income under $125,000 and typical assets are not expected to contribute. Students still contribute from work and savings.", "url": "https://admissions.dartmouth.edu/how-aid-works"},
+      {"name": "Free tuition", "kind": "Need-based", "what": "Families earning under $175,000 with typical assets can expect a scholarship covering at least full tuition. There is no income cutoff for aid consideration.", "url": "https://financialaid.dartmouth.edu/"},
+      {"name": "QuestBridge National College Match", "kind": "Need-based match", "what": "Match students have $0 parent contribution and $0 loans for all four years.", "url": "https://www.questbridge.org/partners/college-partners/dartmouth-college/financial-aid"},
+      {"name": "Student contribution", "kind": "Expectation", "what": "Plan on roughly $1,000-$2,500 a year from leave-term earnings, plus any summer work or savings.", "url": "https://admissions.dartmouth.edu/how-aid-works"},
+      {"name": "No merit or athletic scholarships", "kind": "Info", "what": "Dartmouth offers only need-based aid. Outside scholarships you win can reduce the work or savings part of your package.", "url": ""}
+    ],
+    "area": [
+      {"label": "Dartmouth housing + dining budget", "value": "$21,528 / year ($13,032 housing + $8,496 food)"},
+      {"label": "Cost of living index, Hanover", "value": "~148 (US average = 100)"},
+      {"label": "Median rent, Hanover", "value": "~$2,254 / month (skewed by large houses)"},
+      {"label": "Room in a shared student house", "value": "~$550-$1,200+ / person / month"},
+      {"label": "Lebanon / West Lebanon", "value": "usually cheaper, but you'd commute"},
+      {"label": "Books, supplies, equipment", "value": "$1,005 / year"},
+      {"label": "Personal expenses", "value": "$2,040 / year"}
+    ],
+    "area_note": "Most students live in college housing, so the school's budget is the best guide. Off-campus rent figures come from 2025-26 sources and may be dated. Travel costs aren't itemized in Dartmouth's budget, so add flights or gas if you live far away.",
+    "links": [
+      {"label": "Dartmouth cost of attendance 2026-27", "url": "https://financialaid.dartmouth.edu/cost-attendance/cost-attendance-2026-2027"},
+      {"label": "How Dartmouth aid works", "url": "https://admissions.dartmouth.edu/how-aid-works"},
+      {"label": "Dartmouth financial aid", "url": "https://financialaid.dartmouth.edu/"}
+    ]
+  }
+}

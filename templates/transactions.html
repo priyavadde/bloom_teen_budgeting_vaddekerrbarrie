@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Transactions{% endblock %}
+{% block content %}
+
+<div class="topbar">
+  <div class="greeting">
+    <h1>Transactions</h1>
+    <p>Add what you spend or earn — it's sorted automatically.</p>
+  </div>
+</div>
+
+<div class="content-grid">
+  <div class="card">
+    <div class="section-title">All transactions</div>
+    {% if rows %}
+      {% for t in rows %}
+      <div class="tx-row">
+        <div class="tx-icon" style="background: var(--{{ t.color }}-pale);">{{ t.icon }}</div>
+        <div class="tx-info">
+          <div class="tx-name">{{ t.name }}</div>
+          <div class="tx-meta">{{ t.category_label }}</div>
+        </div>
+        <div class="tx-amount {{ 'positive' if t.type == 'income' else 'negative' }}">
+          {{ '+' if t.type == 'income' else '' }}${{ "%.2f"|format(t.amount if t.amount > 0 else -t.amount) }}
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p style="color: var(--ink-soft); font-size: 13px;">No transactions yet — add your first one!</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <div class="section-title">Add a transaction</div>
+    <form method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+      <div>
+        <label style="font-size: 12.5px; font-weight: 600; color: var(--ink-soft);">What was it?</label>
+        <input type="text" name="name" placeholder="e.g. Chipotle" required
+          style="width: 100%; margin-top: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+      </div>
+      <div>
+        <label style="font-size: 12.5px; font-weight: 600; color: var(--ink-soft);">Amount ($)</label>
+        <input type="number" step="0.01" min="0" name="amount" placeholder="12.50" required
+          style="width: 100%; margin-top: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+      </div>
+      <div>
+        <label style="font-size: 12.5px; font-weight: 600; color: var(--ink-soft);">Type</label>
+        <select name="type" style="width: 100%; margin-top: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+          <option value="expense">Expense (money out)</option>
+          <option value="income">Income (money in)</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size: 12.5px; font-weight: 600; color: var(--ink-soft);">Category</label>
+        <select name="category" style="width: 100%; margin-top: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+          <option value="">Auto-detect for me</option>
+          {% for key, label in categories.items() %}
+          <option value="{{ key }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary" style="justify-content: center;">Add transaction</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Goals{% endblock %}
+{% block content %}
+
+<div class="topbar">
+  <div class="greeting">
+    <h1>Your goals</h1>
+    <p>Track what you're saving up for.</p>
+  </div>
+</div>
+
+<div class="content-grid">
+  <div>
+    {% if goals %}
+      {% for g in goals %}
+      {% set pct = ((g.saved / g.target) * 100) | round | int if g.target > 0 else 0 %}
+      <div class="card" style="margin-bottom: 14px;">
+        <div class="goal-card" style="border: none; padding: 0 0 14px;">
+          <div class="ring" style="background: conic-gradient(var(--purple) {{ pct }}%, var(--purple-pale) 0);">{{ pct }}%</div>
+          <div class="goal-info">
+            <div class="goal-name">{{ g.name }}</div>
+            <div class="goal-sub">${{ "%.2f"|format(g.saved) }} of ${{ "%.2f"|format(g.target) }}</div>
+          </div>
+        </div>
+        <form method="POST" style="display: flex; gap: 8px;">
+          <input type="hidden" name="action" value="add_money">
+          <input type="hidden" name="goal_id" value="{{ g.id }}">
+          <input type="number" step="0.01" min="0" name="amount" placeholder="Add $"
+            style="flex: 1; border: 1px solid var(--line); border-radius: 12px; padding: 9px 14px; font-family: inherit; font-size: 13px;">
+          <button type="submit" class="btn btn-ghost">Add</button>
+        </form>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p style="color: var(--ink-soft); font-size: 13px;">No goals yet — add your first one!</p>
+    {% endif %}
+  </div>
+
+  <div class="card" style="align-self: start;">
+    <div class="section-title">New goal</div>
+    <form method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+      <input type="hidden" name="action" value="create">
+      <div>
+        <label style="font-size: 12.5px; font-weight: 600; color: var(--ink-soft);">What are you saving for?</label>
+        <input type="text" name="name" placeholder="e.g. New laptop" required
+          style="width: 100%; margin-top: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+      </div>
+      <div>
+        <label style="font-size: 12.5px; font-weight: 600; color: var(--ink-soft);">Target amount ($)</label>
+        <input type="number" step="0.01" min="0" name="target" placeholder="500" required
+          style="width: 100%; margin-top: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+      </div>
+      <button type="submit" class="btn btn-primary" style="justify-content: center;">Create goal</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

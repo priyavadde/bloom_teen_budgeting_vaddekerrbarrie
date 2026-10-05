@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Explore Colleges{% endblock %}
+{% block content %}
+
+<div class="topbar">
+  <div class="greeting">
+    <h1>Explore colleges</h1>
+    <p class="page-sub">Pick a school to see costs and aid.</p>
+  </div>
+</div>
+
+<div class="panel" style="display: flex; gap: 14px; flex-wrap: wrap; padding: 18px 22px; margin-bottom: 28px;">
+  <div class="field" style="flex: 1; min-width: 200px; margin: 0;">
+    <input type="text" id="q" placeholder="Search colleges" oninput="filterSchools()">
+  </div>
+  <div class="field" style="min-width: 180px; margin: 0;">
+    <select id="type" onchange="filterSchools()">
+      <option value="">All types</option>
+      <option>Ivy League</option>
+      <option>Other private</option>
+      <option>Public</option>
+    </select>
+  </div>
+</div>
+
+<div class="explore-grid">
+  {% for c in schools %}
+  <div class="school-card" data-name="{{ c.name|lower }}" data-type="{{ c.type }}">
+    <div>
+      <span class="pill">{{ c.type }}</span>
+      <h3 class="school-name" style="margin-top: 16px;">{{ c.name }}</h3>
+      <div class="school-loc">{{ c.loc }}</div>
+    </div>
+    <div class="school-price">About <b>${{ "{:,}".format(c.coa) }}</b> per year{% if c.coa_out %} (in-state){% endif %}</div>
+    {% if c.has_details %}
+      <a class="btn btn-primary btn-wide" href="{{ url_for('explore_detail', school_id=c.id) }}">View costs &amp; aid</a>
+    {% else %}
+      <button type="button" class="btn btn-primary btn-wide" onclick="soon(this)">View costs &amp; aid</button>
+      <div class="soon-msg">Coming soon</div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  function filterSchools() {
+    const q = document.getElementById("q").value.toLowerCase();
+    const t = document.getElementById("type").value;
+    document.querySelectorAll(".school-card").forEach(el => {
+      const show = el.dataset.name.includes(q) && (!t || el.dataset.type === t);
+      el.style.display = show ? "flex" : "none";
+    });
+  }
+  function soon(btn) {
+    btn.nextElementSibling.style.display = "block";
+  }
+</script>
+
+{% endblock %}

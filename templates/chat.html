@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Ask Bloom AI{% endblock %}
+{% block content %}
+
+<div class="topbar">
+  <div class="greeting">
+    <h1>Ask Bloom AI 💬</h1>
+    <p>Not sure if you should buy something? Ask.</p>
+  </div>
+</div>
+
+<div class="card" style="min-height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+  <div style="display: flex; flex-direction: column; gap: 14px; max-height: 480px; overflow-y: auto;">
+    {% if not history %}
+    <div class="tx-row" style="border: none;">
+      <div class="tx-icon" style="background: var(--purple-pale);">🌱</div>
+      <div class="tx-info">
+        <div class="tx-name">Bloom AI</div>
+        <div class="tx-meta" style="margin-top: 6px; color: var(--ink);">
+          Hey Maya! Tell me what you're thinking of buying and I'll help you decide if it fits your budget and goals.
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% for m in history %}
+    <div class="tx-row" style="border: none; {% if m.role == 'user' %}flex-direction: row-reverse; text-align: right;{% endif %}">
+      <div class="tx-icon" style="background: {{ 'var(--blue-pale)' if m.role == 'user' else 'var(--purple-pale)' }};">
+        {{ '🙋' if m.role == 'user' else '🌱' }}
+      </div>
+      <div class="tx-info">
+        <div class="tx-name">{{ 'You' if m.role == 'user' else 'Bloom AI' }}</div>
+        <div class="tx-meta" style="margin-top: 6px; color: var(--ink);">{{ m.content }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <form method="POST" style="display: flex; gap: 10px; margin-top: 20px;">
+    <input type="text" name="message" placeholder="Should I buy AirPods for $180?" required
+      style="flex:1; border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; font-family: inherit; font-size: 13.5px;">
+    <button type="submit" class="btn btn-primary">Ask</button>
+  </form>
+</div>
+
+<p style="color: var(--ink-soft); font-size: 13px; margin-top: 16px;">
+  🔧 Needs a GEMINI_API_KEY environment variable set to give real answers — see the README.
+</p>
+
+{% endblock %}

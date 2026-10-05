@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}College Costs{% endblock %}
+{% block content %}
+
+<div class="topbar">
+  <div class="greeting">
+    <h1>College necessities</h1>
+    <p>Tuition, applications, and cost of living — tracked like a goal.</p>
+  </div>
+</div>
+
+<div class="content-grid">
+  <div>
+    {% if goals %}
+      {% for g in goals %}
+      {% set pct = ((g.saved / g.target) * 100) | round | int if g.target > 0 else 0 %}
+      <div class="card" style="margin-bottom: 14px;">
+        <div class="goal-card" style="border: none; padding: 0 0 14px;">
+          <div class="ring" style="background: conic-gradient(var(--mint) {{ pct }}%, var(--mint-pale) 0); color: var(--purple-dark);">{{ pct }}%</div>
+          <div class="goal-info">
+            <div class="goal-name">{{ g.name }}</div>
+            <div class="goal-sub">${{ "%.2f"|format(g.saved) }} of ${{ "%.2f"|format(g.target) }}</div>
+          </div>
+        </div>
+        <form method="POST" style="display: flex; gap: 8px;">
+          <input type="hidden" name="action" value="add_money">
+          <input type="hidden" name="goal_id" value="{{ g.id }}">
+          <input type="number" step="0.01" min="0" name="amount" placeholder="Add $"
+            style="flex: 1; border: 1px solid var(--line); border-radius: 12px; padding: 9px 14px; font-family: inherit; font-size: 13px;">
+          <button type="submit" class="btn btn-ghost">Add</button>
+        </form>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p style="color: var(--ink-soft); font-size: 13px;">No college costs added yet.</p>
+    {% endif %}
+  </div>
+
+  <div class="card" style="align-self: start;">
+    <div class="section-title">Add a college cost</div>
+    <form method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+      <input type="hidden" name="action" value="create">
+      <div>
+        <label style="font-size: 12.5px; font-weight: 600; color: var(--ink-soft);">What is it?</label>
+        <input type="text" name="name" placeholder="e.g. Fall tuition" required
+          style="width: 100%; margin-top: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+      </div>
+      <div>
+        <label style="font-size: 12.5px; font-weight: 600; color: var(--ink-soft);">Amount needed ($)</label>
+        <input type="number" step="0.01" min="0" name="target" placeholder="1200" required
+          style="width: 100%; margin-top: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+      </div>
+      <button type="submit" class="btn btn-primary" style="justify-content: center;">Add</button>
+    </form>
+    <p style="font-size: 12px; color: var(--ink-soft); margin-top: 14px;">
+      🔧 Location-based cost of living estimates are a future add-on — for now, add them manually.
+    </p>
+  </div>
+</div>
+
+  <div class="card" style="margin-top: 20px;">
+    <div class="section-title">Browse colleges</div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 8px;">
+      <input type="text" id="school-search" placeholder="Search schools..." oninput="filterSchools()"
+        style="flex: 1; min-width: 180px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+      <select id="school-type" onchange="filterSchools()"
+        style="border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-family: inherit; font-size: 13.5px;">
+        <option value="">All types</option>
+        <option>Ivy League</option>
+        <option>Other private</option>
+        <option>Public</option>
+      </select>
+    </div>
+
+    {% for c in colleges %}
+    <div class="school-row" data-name="{{ c.name|lower }}" data-type="{{ c.type }}"
+      style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 0; border-top: 1px solid var(--line);">
+      <div>
+        <div class="goal-name">{{ c.name }}</div>
+        <div class="goal-sub">
+          {{ c.loc }} · {{ c.type }} ·
+          ~${{ "{:,}".format(c.coa) }}/yr{% if c.coa_out %} in-state, ~${{ "{:,}".format(c.coa_out) }}/yr out-of-state{% endif %}
+          · <a href="{{ c.url }}" target="_blank" rel="noopener">official info</a>
+        </div>
+      </div>
+      {% if c.added %}
+        <span class="goal-sub">✓ On your list</span>
+      {% else %}
+        <form method="POST" style="display: flex; gap: 8px;">
+          <input type="hidden" name="action" value="add_school">
+          <input type="hidden" name="school_id" value="{{ c.id }}">
+          {% if c.coa_out %}
+            <button type="submit" name="residency" value="in" class="btn btn-ghost">Add (in-state)</button>
+            <button type="submit" name="residency" value="out" class="btn btn-ghost">Add (out-of-state)</button>
+          {% else %}
+            <button type="submit" name="residency" value="in" class="btn btn-primary">Add to my list</button>
+          {% endif %}
+        </form>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <p style="font-size: 12px; color: var(--ink-soft); margin-top: 14px;">
+      Costs are rounded yearly estimates of full cost of attendance. Always confirm on each school's official page.
+    </p>
+  </div>
+
+  <script>
+    function filterSchools() {
+      const q = document.getElementById("school-search").value.toLowerCase();
+      const t = document.getElementById("school-type").value;
+      document.querySelectorAll(".school-row").forEach(r => {
+        const show = r.dataset.name.includes(q) && (!t || r.dataset.type === t);
+        r.style.display = show ? "flex" : "none";
+      });
+    }
+  </script>
+
+{% endblock %}

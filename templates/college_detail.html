@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}{{ school.name }}{% endblock %}
+{% block content %}
+
+<div class="topbar">
+  <div class="greeting">
+    <a href="{{ url_for('explore') }}" class="page-sub">← All colleges</a>
+    <div class="d-head" style="margin-top: 12px;">
+      <h1 class="d-title">{{ school.name }}</h1>
+      <span class="pill">{{ d.tagline }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="filters">
+    <div>
+      <label>Intended major</label>
+      <select id="major">
+        {% for m in d.majors %}<option value="{{ loop.index0 }}">{{ m.name }}</option>{% endfor %}
+      </select>
+    </div>
+    {% if d.has_residency %}
+    <div>
+      <label>Residency</label>
+      <select id="residency">
+        <option value="res">Texas resident</option>
+        <option value="non">Out of state</option>
+      </select>
+    </div>
+    {% endif %}
+    <div>
+      <label>Where you'll live</label>
+      <select id="living">
+        {% for o in d.living.options %}<option value="{{ loop.index0 }}">{{ o.label }}</option>{% endfor %}
+      </select>
+    </div>
+    <div>
+      <label>Family income</label>
+      <select id="income">
+        {% for b in d.income_brackets %}<option value="{{ loop.index0 }}">{{ b.label }}</option>{% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="summary">
+  <div class="sum-box"><small>Sticker price / year</small><b id="s-total"></b></div>
+  <div class="sum-box"><small>Estimated aid / year</small><b id="s-aid"></b></div>
+  <div class="sum-box hl"><small>You'd pay / year</small><b id="s-net"></b><div class="school-loc" id="s-four"></div></div>
+</div>
+
+<div class="tabs">
+  <button type="button" class="tab-btn on" data-tab="cost">Costs</button>
+  <button type="button" class="tab-btn" data-tab="aid">Scholarships &amp; aid</button>
+  <button type="button" class="tab-btn" data-tab="living">Cost of living</button>
+</div>
+
+<div class="panel tab-pane on" id="pane-cost">
+  <div id="breakdown"></div>
+  <details class="more"><summary>About these numbers</summary><p>{{ d.tuition_note }}</p></details>
+  <form method="POST" action="{{ url_for('college') }}" style="margin-top: 24px;">
+    <input type="hidden" name="action" value="create">
+    <input type="hidden" name="name" id="goal-name">
+    <input type="hidden" name="target" id="goal-target">
+    <button type="submit" class="btn btn-primary">Save as a savings goal</button>
+  </form>
+</div>
+
+<div class="panel tab-pane" id="pane-aid">
+  {% for a in d.aid_options %}
+  <details class="aid-item">
+    <summary><span>{{ a.name }} <span class="pill" style="margin-left: 8px; font-weight: 600;">{{ a.kind }}</span></span></summary>
+    <p>{{ a.what }}{% if a.url %} <a href="{{ a.url }}" target="_blank" rel="noopener">Learn more</a>{% endif %}</p>
+  </details>
+  {% endfor %}
+  <details class="more">
+    <summary>How we estimated your aid</summary>
+    <p id="aid-note"></p>
+    <p id="major-aid"></p>
+  </details>
+</div>
+
+<div class="panel tab-pane" id="pane-living">
+  {% for r in d.area[:4] %}
+  <div class="line-row"><span>{{ r.label }}</span><b>{{ r.value }}</b></div>
+  {% endfor %}
+  <details class="more">
+    <summary>More local costs</summary>
+    {% for r in d.area[4:] %}
+    <div class="line-row"><span>{{ r.label }}</span><b>{{ r.value }}</b></div>
+    {% endfor %}
+    <p>{{ d.area_note }}</p>
+  </details>
+</div>
+
+<div class="src-links">
+  Official sources:
+  {% for l in d.links %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ l.label }}</a>{% endfor %}
+</div>
+
+<script>
+  const d = {{ d|tojson }};
+  const schoolName = {{ school.name|tojson }};
+  const $ = id => document.getElementById(id);
+  const money = n => "$" + Math.round(n).toLocaleString("en-US");
+
+  function row(label, value, bold) {
+    return `<div class="line-row${bold ? " total" : ""}"><span>${label}</span><span>${value}</span></div>`;
+  }
+
+  function update() {
+    const major = d.majors[Number($("major").value)];
+    const nonres = d.has_residency && $("residency").value === "non";
+    const living = d.living.options[Number($("living").value)];
+    const bracket = d.income_brackets[Number($("income").value)];
+
+    const tuition = nonres ? d.tuition.nonresident + major.diff_non : d.tuition.resident + major.diff_res;
+    const fees = d.fees || 0;
+    const total = tuition + fees + living.housing_food +
+      (d.living.transport || 0) + (d.living.books || 0) + (d.living.personal || 0);
+
+    let rows = row("Tuition" + (fees ? "" : " &amp; fees"), money(tuition));
+    if (fees) rows += row("Required fees", money(fees));
+    rows += row("Housing &amp; food", money(living.housing_food));
+    if (d.living.transport) rows += row("Transportation", money(d.living.transport));
+    rows += row("Books &amp; supplies", money(d.living.books));
+    rows += row("Personal expenses", money(d.living.personal));
+    rows += row("Total", money(total), true);
+    $("breakdown").innerHTML = rows;
+
+    let aid = 0, note = "";
+    if (nonres) {
+      note = d.nonres_note;
+    } else if (bracket.rule === "tuition_full") {
+      aid = tuition;
+      note = "Estimate: tuition covered by need-based aid.";
+    } else if (bracket.rule === "tuition_partial") {
+      aid = tuition * bracket.fraction;
+      note = "Partial tuition help. The exact amount varies, so this assumes about half of tuition as a rough midpoint.";
+    } else if (bracket.rule === "coa_minus_student") {
+      aid = Math.max(total - bracket.student_contribution, 0);
+      note = "Assumes you contribute about " + money(bracket.student_contribution) + " a year from work and savings. Dartmouth expects roughly $1,000-$2,500 from leave-term earnings, and summer earnings may add to it.";
+    } else {
+      note = "Need-based aid is unlikely at this income, so this assumes $0. Check the school's net price calculator for a better estimate.";
+    }
+    aid = Math.min(aid, total);
+    const net = total - aid;
+
+    $("s-total").textContent = money(total);
+    $("s-aid").textContent = money(aid);
+    $("s-net").textContent = money(net);
+    $("s-four").textContent = "About " + money(net * 4) + " over 4 years";
+    $("aid-note").textContent = note;
+    $("major-aid").textContent = d.major_aid_text.replace("{college}", major.college);
+
+    $("goal-name").value = schoolName + " · est. net cost (4 yrs)";
+    $("goal-target").value = (net * 4).toFixed(2);
+  }
+
+  ["major", "residency", "living", "income"].forEach(id => {
+    const el = $(id);
+    if (el) el.addEventListener("change", update);
+  });
+
+  document.querySelectorAll(".tab-btn").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(x => x.classList.toggle("on", x === b));
+    document.querySelectorAll(".tab-pane").forEach(p => p.classList.toggle("on", p.id === "pane-" + b.dataset.tab));
+  }));
+
+  update();
+</script>
+
+{% endblock %}

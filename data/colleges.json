@@ -1,0 +1,16 @@
+[
+  {"id":"harvard","name":"Harvard University","loc":"Cambridge, MA","type":"Ivy League","coa":95000,"url":"https://college.harvard.edu/financial-aid"},
+  {"id":"yale","name":"Yale University","loc":"New Haven, CT","type":"Ivy League","coa":98000,"url":"https://admissions.yale.edu/cost"},
+  {"id":"princeton","name":"Princeton University","loc":"Princeton, NJ","type":"Ivy League","coa":94000,"url":"https://admission.princeton.edu/cost-aid"},
+  {"id":"columbia","name":"Columbia University","loc":"New York, NY","type":"Ivy League","coa":98000,"url":"https://cc-seas.financialaid.columbia.edu"},
+  {"id":"penn","name":"University of Pennsylvania","loc":"Philadelphia, PA","type":"Ivy League","coa":96000,"url":"https://srfs.upenn.edu"},
+  {"id":"brown","name":"Brown University","loc":"Providence, RI","type":"Ivy League","coa":98000,"url":"https://admission.brown.edu/costs-financial-aid"},
+  {"id":"cornell","name":"Cornell University","loc":"Ithaca, NY","type":"Ivy League","coa":95000,"url":"https://finaid.cornell.edu"},
+   {"id":"dartmouth","name":"Dartmouth College","loc":"Hanover, NH","type":"Ivy League","coa":98000,"url":"https://financialaid.dartmouth.edu"},
+  {"id":"utaustin","name":"UT Austin","loc":"Austin, TX","type":"Public","coa":33000,"coa_out":66000,"url":"https://onestop.utexas.edu/managing-costs/cost-tuition-rates/cost-of-attendance/"},
+  {"id":"stanford","name":"Stanford University","loc":"Stanford, CA","type":"Other private","coa":94000,"url":"https://financialaid.stanford.edu"},
+  {"id":"mit","name":"MIT","loc":"Cambridge, MA","type":"Other private","coa":90000,"url":"https://mitadmissions.org/afford"},
+  {"id":"duke","name":"Duke University","loc":"Durham, NC","type":"Other private","coa":95000,"url":"https://financialaid.duke.edu"},
+  {"id":"rice","name":"Rice University","loc":"Houston, TX","type":"Other private","coa":82000,"url":"https://financialaid.rice.edu"},
+  {"id":"tamu","name":"Texas A&M University","loc":"College Station, TX","type":"Public","coa":31000,"coa_out":55000,"url":"https://financialaid.tamu.edu"}
+]

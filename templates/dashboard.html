@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="topbar">
+  <div class="greeting">
+    <h1>Hey Scarlett! 👋</h1>
+    <p>Here's how your money's doing.</p>
+  </div>
+  <div class="topbar-actions">
+    <div class="icon-btn">🔔</div>
+    <div class="avatar">M</div>
+  </div>
+</div>
+
+<div class="summary-grid">
+  <div class="card summary-card">
+    <div class="label"><span class="badge blue">💰</span> Total balance</div>
+    <div class="value">${{ "%.2f"|format(data.balance) }}</div>
+  </div>
+  <div class="card summary-card">
+    <div class="label"><span class="badge purple">📈</span> Investments</div>
+    <div class="value">$340.12</div>
+    <div class="delta">🔧 Click here to connect a bank!</div>
+  </div>
+  <div class="card summary-card">
+    <div class="label"><span class="badge pink">🛍️</span> Spent overall</div>
+    <div class="value">${{ "%.2f"|format(data.spent) }}</div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <div>
+    <div class="card" style="margin-bottom: 18px;">
+      <div class="section-title">Spending by category <a class="see-all" href="{{ url_for('transactions') }}">See all</a></div>
+      {% if data.categories %}
+        {% for c in data.categories %}
+        <div class="category-row">
+          <div class="cat-icon" style="background: var(--{{ c.color }}-pale);">{{ c.icon }}</div>
+          <div class="cat-info">
+            <div class="cat-name">{{ c.name }}</div>
+            <div class="cat-bar"><div class="cat-bar-fill" style="width: {{ c.pct }}%; background: var(--{{ c.color }});"></div></div>
+          </div>
+          <div class="cat-amount">${{ "%.2f"|format(c.amount) }}</div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p style="color: var(--ink-soft); font-size: 13px;">No spending yet — add a transaction to see it here.</p>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <div class="section-title">Recent transactions <a class="see-all" href="{{ url_for('transactions') }}">See all</a></div>
+      {% if data.recent %}
+        {% for t in data.recent %}
+        <div class="tx-row">
+          <div class="tx-info">
+            <div class="tx-name">{{ t.name }}</div>
+            <div class="tx-meta">{{ t.category.replace('_', ' ').title() }}</div>
+          </div>
+          <div class="tx-amount {{ 'positive' if t.amount > 0 else 'negative' }}">
+            {{ '+' if t.amount > 0 else '' }}${{ "%.2f"|format(t.amount) }}
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p style="color: var(--ink-soft); font-size: 13px;">No transactions yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    <div class="card" style="margin-bottom: 18px;">
+      <div class="section-title">Your goals <a class="see-all" href="{{ url_for('goals') }}">See all</a></div>
+      {% if data.goals %}
+        {% for g in data.goals %}
+        {% set pct = ((g.saved / g.target) * 100) | round | int if g.target > 0 else 0 %}
+        <div class="goal-card">
+          <div class="ring" style="background: conic-gradient(var(--purple) {{ pct }}%, var(--purple-pale) 0);">{{ pct }}%</div>
+          <div class="goal-info">
+            <div class="goal-name">{{ g.name }}</div>
+            <div class="goal-sub">${{ "%.2f"|format(g.saved) }} of ${{ "%.2f"|format(g.target) }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p style="color: var(--ink-soft); font-size: 13px;">No goals yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <div class="section-title">Ask Bloom AI</div>
+      <p style="font-size: 13px; color: var(--ink-soft); margin: 0 0 14px;">
+        Not sure if you should buy something? Ask before you spend.
+      </p>
+      <a href="{{ url_for('chat') }}" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        💬 Should I buy this?
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
